@@ -8,7 +8,7 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 async function placeBid(event, context) {
   const {id} = event.pathParameters;
   const {amount} = event.body;
-  console.log(event.body)
+
   const params = {
     TableName: process.env.AUCTIONS_TABLE_NAME,
     Key: { id },
@@ -18,13 +18,12 @@ async function placeBid(event, context) {
     },
     ReturnValues: 'ALL_NEW'
   }
-  console.log("params: ", params)
+
   let updatedAuction;
 
   try {
-    console.log("trying to update")
     const result = await dynamodb.update(params).promise();
-    console.log("result: ", result)
+
     updatedAuction = result.Attributes;
   } catch(err) {
     console.error(err);
